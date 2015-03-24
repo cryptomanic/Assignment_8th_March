@@ -1,3 +1,4 @@
+'''
 class Interpolate:
     
     def solve(self,A,B,method):
@@ -44,7 +45,47 @@ apx=Interpolate()
 for method in ["newton","lagrange"]:
     sol=apx.solve([1,2,3],[0,-1,0],method)
     print(sol)
-               
+'''               
+import sympy as sp
+import matplotlib.pyplot as plt
+import numpy as np
+class Interpolate:
+    P, X, Y = [], [], []
+    # for finding limits, polynomials
+    x = sp.Symbol('x')
+    def Lagrange_Polynomial(self, L, M):
+        # X for storing x coordinates
+        # Y for storing f(x)
+        self.X, self.Y = L, M
+        for i in range(len(L)):
+            k, j = 1, 0
+            # forming list of polynomials
+            # summation of which is Lagrange Polynomial
+            while j < len(L):
+                if i != j:
+                    k *= (self.x-L[j])/(L[i]-L[j])
+                j += 1   
+            k *= M[i] 
+            self.P.append(k)
+        # plot Lagrange Polynomial
+        self.plot_the_graph()      
     
+    def plot_the_graph(self, temp = []):
+        arr = np.arange(0,max(self.X)+0.2,0.1)
+        pol_sum = 0
+        # plot function in the list
+        for  i in self.P:
+            pol_sum += i
+            for j in arr:
+                temp.append(sp.limit(i,self.x,j))
+            plt.plot(arr, temp)             
+            temp = []       
+        # plot Lagrange Polynomial in Black Color
+        for j in arr:
+                temp.append(sp.limit(pol_sum,self.x,j))
+        plt.plot(arr, temp,'k')
+        # plot node points
+        plt.plot(self.X,self.Y,'ro')
+        plt.show()                  
 
    
