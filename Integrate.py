@@ -1,3 +1,4 @@
+'''
 class Integrate:
 	def solve(self,order,coeff,method):
 		def f(x):
@@ -44,3 +45,31 @@ class Integrate:
 				ans=((x_values[n]-x_values[0])*s)/(3*n)
 				return ans
 			return simpson_sol(f,x_values,n)
+'''
+import numpy as np
+import  matplotlib.pyplot as plt
+class Integrate:
+    rec_wid, f = 0.0, ''
+    X_initial, X_final, sum = 0.0, 0.0, 0.0 
+    Llimit, Ulimit = 0, 0
+    def TrapezoidalRule(self, f, Llimit, Ulimit, nop):
+        self.f = f
+        self.Llimit = Llimit
+        self.Ulimit = Ulimit
+        self.rec_wid = (Ulimit-Llimit)/(nop*1.0)
+        self.X_initial = Llimit
+        self.X_final = Llimit + self.rec_wid
+        self.plot_the_curve()
+        for i in range(nop):
+           self.plot_trapezium()
+           self.sum += 0.5*self.rec_wid*(f(self.X_initial)+f(self.X_final)) 
+           self.X_initial = self.X_final
+           self.X_final += self.rec_wid
+        plt.show() 
+        return self.sum  
+    def plot_the_curve(self):   
+        my_arr = np.arange(self.Llimit-1.0,self.Ulimit+1.0,10**(-4))
+        plt.plot(my_arr,self.f(my_arr),color = 'red', linewidth = 2.0)
+    def plot_trapezium(self):
+        plt.fill_between([self.X_initial, self.X_final],
+        [self.f(self.X_initial), self.f(self.X_final)])
